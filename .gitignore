@@ -1,0 +1,19 @@
+# Dependencies and build output
+node_modules/
+dist/
+coverage/
+
+# Local configuration and secrets (use .env.example)
+.env
+.env.*
+!.env.example
+
+# The challenge brief is not ours to publish
+*.pdf
+
+# Logs and OS / editor files
+*.log
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
