@@ -1,0 +1,38 @@
+# Web app server. At container start the nginx image replaces ${API_UPSTREAM}
+# from the environment (only variables that are set are replaced, so nginx's
+# own $uri etc. are left alone) and writes the result to conf.d/default.conf.
+
+server {
+    listen 8080;
+    server_name _;
+    root /usr/share/nginx/html;
+    server_tokens off;
+
+    # The browser calls /api on this origin; nginx forwards it to the API.
+    # No CORS is needed, and the browser never learns where the API or Fake Store live.
+    location /api/ {
+        proxy_pass ${API_UPSTREAM};
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_connect_timeout 5s;
+        proxy_read_timeout 15s;
+    }
+
+    # Vite's hashed build files never change, so browsers may cache them for a year.
+    # A missing file is a real 404, not the app shell.
+    location /assets/ {
+        include /etc/nginx/security-headers.conf;
+        expires 1y;
+        try_files $uri =404;
+    }
+
+    # Every other path is a client-side route: serve the app shell, never cached,
+    # so a new release is picked up on the next page load.
+    location / {
+        include /etc/nginx/security-headers.conf;
+        expires -1;
+        try_files $uri /index.html;
+    }
+}
