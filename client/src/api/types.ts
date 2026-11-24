@@ -23,6 +23,13 @@ export interface Product {
   readonly rating: Rating | null;
 }
 
+/** F2: what `GET /api/categories/:slug/products` returns (server/src/domain/category-page.ts). */
+export interface CategoryPage {
+  readonly category: Category;
+  readonly topRated: Product[];
+  readonly others: Product[];
+}
+
 /** The one error shape every API endpoint returns (server/src/http/errors.ts). */
 export interface ApiErrorBody {
   readonly error: {

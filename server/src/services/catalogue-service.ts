@@ -1,4 +1,6 @@
-import { isValidProductId, type Product } from '../domain/product.js';
+import { isValidCategorySlug } from '../domain/category.js';
+import { type CategoryPage, splitCategoryPage } from '../domain/category-page.js';
+import { type Category, isValidProductId, type Product } from '../domain/product.js';
 import type { Logger } from '../logger.js';
 import type { FeaturedProducts } from '../ports/featured-products.js';
 import type { ProductSource } from '../ports/product-source.js';
@@ -12,7 +14,7 @@ export interface CatalogueServiceDependencies {
 /**
  * Catalogue business rules. Depends only on ports, so it works the same with
  * Fake Store, a future product database or the in-memory source in tests.
- * Feature slices add methods here: category page (F2), search (F3).
+ * Feature slices add methods here: search (F3).
  */
 export class CatalogueService {
   private readonly products: ProductSource;
@@ -52,5 +54,30 @@ export class CatalogueService {
       return null;
     }
     return this.products.getById(id);
+  }
+
+  /** F2: every category that has products, with its URL slug and display name. */
+  async getCategories(): Promise<Category[]> {
+    return this.products.getCategories();
+  }
+
+  /**
+   * F2: a category's "top rated" products and the rest (rules in `splitCategoryPage`),
+   * or `null` for a category that does not exist. A slug that breaks the slug rule
+   * is `null` straight away, without asking the product source.
+   */
+  async getCategoryPage(slug: string): Promise<CategoryPage | null> {
+    if (!isValidCategorySlug(slug)) {
+      return null;
+    }
+    const [products, featuredIds] = await Promise.all([
+      this.products.getByCategory(slug),
+      this.featured.getFeaturedIds(),
+    ]);
+    const first = products?.[0];
+    if (products === null || first === undefined) {
+      return null;
+    }
+    return { category: first.category, ...splitCategoryPage(products, featuredIds) };
   }
 }
