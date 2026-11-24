@@ -23,6 +23,17 @@ export function toTitleCase(value: string): string {
     .join(' ');
 }
 
+/**
+ * Slugs the app accepts: what `slugify` can produce, up to 64 characters
+ * ("mens-clothing"). Anything else cannot be a category, so it is rejected
+ * before any product source is asked.
+ */
+const CATEGORY_SLUG_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+
+export function isValidCategorySlug(slug: string): boolean {
+  return slug.length <= 64 && CATEGORY_SLUG_PATTERN.test(slug);
+}
+
 /** Builds a category from its display name; the slug is derived from the name. */
 export function categoryFromName(name: string): Category {
   const displayName = name.trim();
