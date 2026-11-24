@@ -141,6 +141,32 @@ describe('CatalogueService.getCategoryPage', () => {
   });
 });
 
+describe('CatalogueService.search', () => {
+  it('returns only the products whose text matches, in source order', async () => {
+    const { service } = serviceWith(['12', '11', '3', '18', '5']);
+
+    expect(ids(await service.search('jacket'))).toEqual(['3', '15', '16', '17']);
+  });
+
+  it('trims the term and ignores case', async () => {
+    const { service } = serviceWith(['12', '11', '3', '18', '5']);
+
+    expect(ids(await service.search('  JACKET  '))).toEqual(['3', '15', '16', '17']);
+  });
+
+  it.each(['', '   '])('returns nothing for the blank term %j without asking the product source', async (term) => {
+    const { service } = serviceWith(['12', '11', '3', '18', '5'], new FailingProductSource());
+
+    await expect(service.search(term)).resolves.toEqual([]);
+  });
+
+  it('lets a product source failure propagate', async () => {
+    const { service } = serviceWith(['12', '11', '3', '18', '5'], new FailingProductSource());
+
+    await expect(service.search('jacket')).rejects.toBeInstanceOf(UpstreamError);
+  });
+});
+
 /** A product source whose upstream is down. */
 class FailingProductSource extends InMemoryProductSource {
   constructor() {
@@ -160,6 +186,10 @@ class FailingProductSource extends InMemoryProductSource {
   }
 
   override getCategories(): Promise<Category[]> {
+    return Promise.reject(new UpstreamError('fakestore', 'GET /products returned HTTP 500'));
+  }
+
+  override search(): Promise<Product[]> {
     return Promise.reject(new UpstreamError('fakestore', 'GET /products returned HTTP 500'));
   }
 }

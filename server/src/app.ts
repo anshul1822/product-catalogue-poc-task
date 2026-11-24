@@ -5,6 +5,7 @@ import { categoryRoutes } from './http/routes/categories.js';
 import { featuredProductRoutes } from './http/routes/featured-products.js';
 import { healthRoutes } from './http/routes/health.js';
 import { productRoutes } from './http/routes/products.js';
+import { searchRoutes } from './http/routes/search.js';
 import type { Logger } from './logger.js';
 import type { CatalogueService } from './services/catalogue-service.js';
 
@@ -33,6 +34,7 @@ export function createApp({ logger, catalogue }: AppDependencies): Express {
   api.use(featuredProductRoutes(catalogue));
   api.use(productRoutes(catalogue));
   api.use(categoryRoutes(catalogue));
+  api.use(searchRoutes(catalogue));
   app.use('/api', api);
 
   app.use(notFoundHandler);

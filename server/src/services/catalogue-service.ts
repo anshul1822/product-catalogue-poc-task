@@ -14,7 +14,6 @@ export interface CatalogueServiceDependencies {
 /**
  * Catalogue business rules. Depends only on ports, so it works the same with
  * Fake Store, a future product database or the in-memory source in tests.
- * Feature slices add methods here: search (F3).
  */
 export class CatalogueService {
   private readonly products: ProductSource;
@@ -79,5 +78,19 @@ export class CatalogueService {
       return null;
     }
     return { category: first.category, ...splitCategoryPage(products, featuredIds) };
+  }
+
+  /**
+   * F3: the products whose text matches `term` (rules in `matchesSearch`: every
+   * word, any order, in title, description or category name; case and
+   * apostrophes ignored), in source order. A blank term matches nothing.
+   * The HTTP layer has already checked the term's length.
+   */
+  async search(term: string): Promise<Product[]> {
+    const trimmed = term.trim();
+    if (trimmed === '') {
+      return [];
+    }
+    return this.products.search(trimmed);
   }
 }
