@@ -4,6 +4,7 @@ import type { FetchLike } from '../adapters/fakestore/fakestore-product-source.j
 import { toProduct } from '../adapters/fakestore/mapper.js';
 import { fakeStoreProductListSchema } from '../adapters/fakestore/schema.js';
 import type { Product } from '../domain/product.js';
+import type { Logger } from '../logger.js';
 
 /**
  * Test-only helpers. Excluded from the build; the running app never reads anything here.
@@ -60,6 +61,33 @@ export function fakeStoreServer(rawProducts: ReadonlyArray<Record<string, unknow
     return Promise.resolve(new Response('Not Found', { status: 404 }));
   };
   return Object.assign(fake, { requestedUrls });
+}
+
+type LogLevel = 'info' | 'warn' | 'error';
+
+export interface RecordingLogger extends Logger {
+  /** What was logged at `level`, one string per call. */
+  lines(level: LogLevel): string[];
+}
+
+/** A logger that keeps output out of the test run and lets tests check what was logged. */
+export function recordingLogger(): RecordingLogger {
+  const entries: Array<{ level: LogLevel; text: string }> = [];
+  const record =
+    (level: LogLevel) =>
+    (...args: unknown[]): void => {
+      entries.push({ level, text: args.map(formatLogArg).join(' ') });
+    };
+  return {
+    info: record('info'),
+    warn: record('warn'),
+    error: record('error'),
+    lines: (level) => entries.filter((entry) => entry.level === level).map((entry) => entry.text),
+  };
+}
+
+function formatLogArg(arg: unknown): string {
+  return arg instanceof Error ? `${arg.name}: ${arg.message}` : String(arg);
 }
 
 /** Builds a domain product for unit tests; override only what the test cares about. */
