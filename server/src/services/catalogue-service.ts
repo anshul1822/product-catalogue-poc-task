@@ -1,4 +1,4 @@
-import type { Product } from '../domain/product.js';
+import { isValidProductId, type Product } from '../domain/product.js';
 import type { Logger } from '../logger.js';
 import type { FeaturedProducts } from '../ports/featured-products.js';
 import type { ProductSource } from '../ports/product-source.js';
@@ -12,7 +12,7 @@ export interface CatalogueServiceDependencies {
 /**
  * Catalogue business rules. Depends only on ports, so it works the same with
  * Fake Store, a future product database or the in-memory source in tests.
- * Feature slices add methods here: getProduct (F4), category page (F2), search (F3).
+ * Feature slices add methods here: category page (F2), search (F3).
  */
 export class CatalogueService {
   private readonly products: ProductSource;
@@ -41,5 +41,16 @@ export class CatalogueService {
     }
 
     return products;
+  }
+
+  /**
+   * F4: one product, or `null` when it does not exist. An id that breaks the
+   * product-id rule is `null` straight away, without asking the product source.
+   */
+  async getProduct(id: string): Promise<Product | null> {
+    if (!isValidProductId(id)) {
+      return null;
+    }
+    return this.products.getById(id);
   }
 }

@@ -1,10 +1,9 @@
 import { ConfigError } from '../../domain/errors.js';
+import { isValidProductId } from '../../domain/product.js';
 import type { FeaturedProducts } from '../../ports/featured-products.js';
 
 /** The home-page AC: "GIVEN I have chosen 5 products to be top rated". */
 export const FEATURED_PRODUCT_COUNT = 5;
-
-const PRODUCT_ID_PATTERN = /^[A-Za-z0-9_-]{1,64}$/;
 
 /**
  * Parses `FEATURED_PRODUCT_IDS`, e.g. "12,11,3,18,5", into ids in display order.
@@ -15,7 +14,7 @@ const PRODUCT_ID_PATTERN = /^[A-Za-z0-9_-]{1,64}$/;
 export function parseFeaturedIds(raw: string, expectedCount = FEATURED_PRODUCT_COUNT): string[] {
   const ids = raw.split(',').map((id) => id.trim());
 
-  const invalid = ids.filter((id) => !PRODUCT_ID_PATTERN.test(id));
+  const invalid = ids.filter((id) => !isValidProductId(id));
   if (invalid.length > 0) {
     throw new ConfigError(
       `FEATURED_PRODUCT_IDS must be a comma-separated list of product ids; invalid: ${JSON.stringify(invalid)}`,

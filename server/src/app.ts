@@ -3,6 +3,7 @@ import helmet from 'helmet';
 import { errorHandler, notFoundHandler } from './http/errors.js';
 import { featuredProductRoutes } from './http/routes/featured-products.js';
 import { healthRoutes } from './http/routes/health.js';
+import { productRoutes } from './http/routes/products.js';
 import type { Logger } from './logger.js';
 import type { CatalogueService } from './services/catalogue-service.js';
 
@@ -29,6 +30,7 @@ export function createApp({ logger, catalogue }: AppDependencies): Express {
   const api = express.Router();
   api.use(healthRoutes());
   api.use(featuredProductRoutes(catalogue));
+  api.use(productRoutes(catalogue));
   app.use('/api', api);
 
   app.use(notFoundHandler);

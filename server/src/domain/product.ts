@@ -17,6 +17,18 @@ export interface Rating {
   readonly count: number;
 }
 
+/**
+ * Product ids the app accepts: letters, digits, "_" and "-", 1 to 64 characters.
+ * Anything else cannot be a product, so it is rejected before any source is asked
+ * (no path tricks such as "../", no oversized input). Fake Store ids are numbers,
+ * which fit; a future source with SKUs or UUIDs fits too.
+ */
+const PRODUCT_ID_PATTERN = /^[A-Za-z0-9_-]{1,64}$/;
+
+export function isValidProductId(id: string): boolean {
+  return PRODUCT_ID_PATTERN.test(id);
+}
+
 export interface Product {
   /** String so future sources (SKUs, UUIDs) need no type change. */
   readonly id: string;
