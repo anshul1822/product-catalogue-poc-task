@@ -59,6 +59,35 @@ describe('CatalogueService.getFeatured', () => {
   });
 });
 
+describe('CatalogueService.getProduct', () => {
+  it('returns the product with that id', async () => {
+    const { service } = serviceWith(['12', '11', '3', '18', '5']);
+
+    await expect(service.getProduct('3')).resolves.toMatchObject({ id: '3', title: 'Mens Cotton Jacket' });
+  });
+
+  it('returns null for an id the source does not have', async () => {
+    const { service } = serviceWith(['12', '11', '3', '18', '5']);
+
+    await expect(service.getProduct('999')).resolves.toBeNull();
+  });
+
+  it.each(['', '../users', 'a b', 'x'.repeat(65), '3;drop'])(
+    'returns null for the impossible id %j without asking the product source',
+    async (id) => {
+      const { service } = serviceWith(['12', '11', '3', '18', '5'], new FailingProductSource());
+
+      await expect(service.getProduct(id)).resolves.toBeNull();
+    },
+  );
+
+  it('lets a product source failure propagate', async () => {
+    const { service } = serviceWith(['12', '11', '3', '18', '5'], new FailingProductSource());
+
+    await expect(service.getProduct('3')).rejects.toBeInstanceOf(UpstreamError);
+  });
+});
+
 /** A product source whose upstream is down. */
 class FailingProductSource extends InMemoryProductSource {
   constructor() {
@@ -67,5 +96,9 @@ class FailingProductSource extends InMemoryProductSource {
 
   override getByIds(): Promise<Product[]> {
     return Promise.reject(new UpstreamError('fakestore', 'GET /products returned HTTP 500'));
+  }
+
+  override getById(): Promise<Product | null> {
+    return Promise.reject(new UpstreamError('fakestore', 'GET /products/{id} returned HTTP 500'));
   }
 }
