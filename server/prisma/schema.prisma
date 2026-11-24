@@ -1,0 +1,39 @@
+// Enquiries are the only data the app owns (D-12, D-13). Products are never stored:
+// each enquiry keeps a snapshot of the product's id, title and price at the time.
+// The connection URL is in prisma.config.ts (migrations) and passed to the
+// PrismaPg driver adapter at runtime (src/adapters/enquiry-postgres/).
+
+generator client {
+  provider            = "prisma-client"
+  output              = "../src/generated/prisma"
+  moduleFormat        = "esm"
+  importFileExtension = "js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum EnquiryStatus {
+  PENDING
+  SENT
+  FAILED
+}
+
+model Enquiry {
+  id            String        @id @default(uuid()) @db.Uuid
+  productId     String        @map("product_id") @db.VarChar(64)
+  productTitle  String        @map("product_title")
+  productPrice  Decimal       @map("product_price") @db.Decimal(10, 2)
+  customerName  String        @map("customer_name") @db.VarChar(100)
+  customerEmail String        @map("customer_email") @db.VarChar(254)
+  customerPhone String?       @map("customer_phone") @db.VarChar(30)
+  message       String?       @db.VarChar(2000)
+  status        EnquiryStatus @default(PENDING)
+  failureReason String?       @map("failure_reason") @db.VarChar(500)
+  createdAt     DateTime      @default(now()) @map("created_at") @db.Timestamptz(3)
+  sentAt        DateTime?     @map("sent_at") @db.Timestamptz(3)
+
+  @@index([status, createdAt])
+  @@map("enquiries")
+}

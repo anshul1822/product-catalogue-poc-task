@@ -3,6 +3,9 @@ node_modules/
 dist/
 coverage/
 
+# Prisma client, generated from server/prisma/schema.prisma by `npm ci` (postinstall)
+server/src/generated/
+
 # Local configuration and secrets (use .env.example)
 .env
 .env.*
