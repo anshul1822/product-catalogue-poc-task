@@ -33,8 +33,9 @@ function ProductDetails({ product }: { product: Product }) {
         <img src={product.imageUrl} alt={product.title} className={styles.image} />
       </div>
       <div className={styles.details}>
-        {/* Plain text for now; slice F2 turns it into a link to the category page. */}
-        <p className={styles.category}>{product.category.name}</p>
+        <p className={styles.category}>
+          <Link to={`/categories/${encodeURIComponent(product.category.slug)}`}>{product.category.name}</Link>
+        </p>
         <h1 id="product-title">{product.title}</h1>
         <Price amount={product.price} className={styles.price} />
         <p className={styles.rating}>{ratingText(product.rating)}</p>

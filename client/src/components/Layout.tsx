@@ -1,9 +1,10 @@
 import { Link, Outlet } from 'react-router';
+import { CategoryNav } from './CategoryNav';
 import styles from './Layout.module.css';
 
 /**
- * The frame around every page. Feature slices add to the header: category
- * links (F2) and the search form (F3).
+ * The frame around every page: brand link and category links (F2) in the header.
+ * Slice F3 adds the search form to the header.
  */
 export function Layout() {
   return (
@@ -12,10 +13,11 @@ export function Layout() {
         Skip to content
       </a>
       <header className={styles.header}>
-        <div className={styles.inner}>
+        <div className={`${styles.inner} ${styles.headerInner}`}>
           <Link to="/" className={styles.brand}>
             Product catalogue
           </Link>
+          <CategoryNav />
         </div>
       </header>
       <main id="main" className={styles.main} tabIndex={-1}>
