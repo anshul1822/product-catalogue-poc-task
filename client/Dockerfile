@@ -19,6 +19,9 @@ FROM nginxinc/nginx-unprivileged:1.30-alpine AS runtime
 
 # Where nginx forwards /api. Compose sets it to the server service; override it elsewhere.
 ENV API_UPSTREAM=http://server:3000
+# DNS server nginx asks for the API's address: Docker's embedded DNS. On AWS ECS
+# (awsvpc networking) use the VPC resolver, 169.254.169.253.
+ENV NGINX_RESOLVER=127.0.0.11
 
 COPY nginx/default.conf.template /etc/nginx/templates/default.conf.template
 COPY nginx/security-headers.conf /etc/nginx/security-headers.conf
