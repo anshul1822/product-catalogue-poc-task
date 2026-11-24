@@ -4,11 +4,11 @@ import { CategoryPage } from './pages/CategoryPage';
 import { HomePage } from './pages/HomePage';
 import { NotFoundPage } from './pages/NotFoundPage';
 import { ProductPage } from './pages/ProductPage';
+import { SearchPage } from './pages/SearchPage';
 
 /**
  * Every page the app has. Shared by the browser router (`main.tsx`) and the
- * memory router in tests. Feature slices add their routes here:
- * `/search` (F3), `/products/:id/enquire` (F5).
+ * memory router in tests. Slice F5 adds `/products/:id/enquire`.
  */
 export const routes: RouteObject[] = [
   {
@@ -18,6 +18,7 @@ export const routes: RouteObject[] = [
       { index: true, element: <HomePage /> },
       { path: 'products/:id', element: <ProductPage /> },
       { path: 'categories/:slug', element: <CategoryPage /> },
+      { path: 'search', element: <SearchPage /> },
       { path: '*', element: <NotFoundPage /> },
     ],
   },

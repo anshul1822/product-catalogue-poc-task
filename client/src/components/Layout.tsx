@@ -1,11 +1,9 @@
 import { Link, Outlet } from 'react-router';
 import { CategoryNav } from './CategoryNav';
 import styles from './Layout.module.css';
+import { SearchForm } from './SearchForm';
 
-/**
- * The frame around every page: brand link and category links (F2) in the header.
- * Slice F3 adds the search form to the header.
- */
+/** The frame around every page: brand link, category links (F2) and the search bar (F3) in the header. */
 export function Layout() {
   return (
     <>
@@ -18,6 +16,7 @@ export function Layout() {
             Product catalogue
           </Link>
           <CategoryNav />
+          <SearchForm />
         </div>
       </header>
       <main id="main" className={styles.main} tabIndex={-1}>
