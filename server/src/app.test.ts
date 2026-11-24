@@ -1,9 +1,8 @@
 import request from 'supertest';
 import { describe, expect, it } from 'vitest';
-import { createApp } from './app.js';
-import { recordingLogger } from './test-support/fixtures.js';
+import { testApp } from './test-support/test-app.js';
 
-const app = createApp({ logger: recordingLogger() });
+const { app } = testApp();
 
 describe('GET /api/health', () => {
   it('returns 200 with status ok', async () => {
