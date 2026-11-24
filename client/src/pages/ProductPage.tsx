@@ -39,6 +39,11 @@ function ProductDetails({ product }: { product: Product }) {
         <h1 id="product-title">{product.title}</h1>
         <Price amount={product.price} className={styles.price} />
         <p className={styles.rating}>{ratingText(product.rating)}</p>
+        <p>
+          <Link to={`/products/${encodeURIComponent(product.id)}/enquire`} className={styles.enquire}>
+            Enquire
+          </Link>
+        </p>
         <h2 className="visually-hidden">Description</h2>
         <p className={styles.description}>{product.description}</p>
       </div>
