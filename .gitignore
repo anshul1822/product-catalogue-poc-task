@@ -14,6 +14,10 @@ server/src/generated/
 # The challenge brief is not ours to publish
 *.pdf
 
+# The author's local working notes (git steps, PR description draft)
+roadmap/03-pull-request.md
+roadmap/PR_DESCRIPTION.md
+
 # Logs and OS / editor files
 *.log
 .DS_Store

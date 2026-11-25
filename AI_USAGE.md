@@ -30,7 +30,6 @@ The work followed a written plan, kept in the repository:
 - **`TASKS.md`**: the brief broken down into constraints, the five acceptance criteria with their open questions, decisions to make, a test plan and a submission checklist. Written first, before any code, after checking the live Fake Store API.
 - **`roadmap/`**: the execution order. The work was split into 7 slices, each on its own branch and merged with a merge commit: two groundwork slices (data layer, foundation), then one per acceptance criterion, each delivering endpoint, page and tests together, so a working feature existed after every merge.
   - `roadmap/PROGRESS.md` holds the status, every decision with its reason, and the AI log.
-  - `roadmap/03-pull-request.md` holds the git steps for each slice.
 - **`docs/HLD.md`**: the architecture diagrams, regenerated from the code at the end.
 
 ## 4. Key prompts and moments that shaped the solution
@@ -88,4 +87,3 @@ Trusting the agent's own report was never the test. Each slice was checked in fo
   - data surviving a restart.
 - **Docs checked against the code:** commit file lists compared with the plan; each commit built in a clean copy; diagrams rendered; the HLD regenerated from the code rather than the plan.
 
-TODO(author): one or two sentences, in your own words, on how you reviewed the agent's output and what you would do differently next time.

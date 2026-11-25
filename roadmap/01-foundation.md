@@ -85,5 +85,5 @@ Rules:
 
 - [x] `npm run typecheck` and `npm test` pass in `server/` and `client/`; `npm run build` passes in `client/`.
 - [x] `docker compose up --build` serves http://localhost:8080 (placeholder home page) and http://localhost:3000/api/health.
-- [x] `PROGRESS.md` and `PR_DESCRIPTION.md` updated.
+- [x] `PROGRESS.md` updated.
 - [x] Merged into `feature/product-catalogue-poc` with a merge commit: PR #2, `1c68fba`. The README (FND-15) is merged with the docs instead (D-33).

@@ -6,7 +6,7 @@ For every slice:
 
 1. Branch from `feature/product-catalogue-poc` after the previous slice is merged.
 2. Build **backend → frontend → tests**, then check the AC by hand.
-3. Update `PROGRESS.md` and `PR_DESCRIPTION.md`, push the slice branch, merge with `--no-ff` (see `03-pull-request.md`).
+3. Update `PROGRESS.md`, push the slice branch, and merge it into `feature/product-catalogue-poc` with a merge commit.
 
 Endpoints and response shapes are in `TASKS.md` section 5. The "Gaps" for each AC are in `TASKS.md` Phase 3; the rules below are the decisions taken for them. Record any change in `PROGRESS.md`.
 

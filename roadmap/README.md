@@ -19,7 +19,7 @@ A slice is a vertical piece of work. Each feature slice delivers one AC end to e
 | 5 | `slice/feature-category` | `02-features.md` | F2: category links and category page | None |
 | 6 | `slice/feature-search` | `02-features.md` | F3: search bar and results | None |
 | 7 | `slice/feature-enquiry` | `02-features.md` | F5: enquiry form, email to the sales inbox, "Thank you" | **PostgreSQL + Prisma, enquiries only** |
-| - | `feature/product-catalogue-poc` | `03-pull-request.md`, `HLD_PROMPT.md` | Wrap-up: README, `DECISIONS.md`, `AI_USAGE.md`, regenerated `docs/HLD.md`, fresh-clone test, the PR into `main` | |
+| - | `feature/product-catalogue-poc` | `HLD_PROMPT.md` | Wrap-up: README, `DECISIONS.md`, `AI_USAGE.md`, regenerated `docs/HLD.md`, fresh-clone test, the PR into `main` | |
 
 All seven slices are built. Status, commits and PR numbers: see `PROGRESS.md`.
 
