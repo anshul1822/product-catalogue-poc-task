@@ -1,14 +1,55 @@
 # Runs the whole app locally:  docker compose up --build
-#   App:        http://localhost:8080
-#   API health: http://localhost:3000/api/health
+#   App:                    http://localhost:8080
+#   Sales inbox (Mailpit):  http://localhost:8025
+#   API health:             http://localhost:3000/api/health
 #
 # No .env file is needed: every value below has a safe default. To override one,
 # copy .env.example to .env (Compose reads it automatically) and edit it.
-# Slice F5 adds PostgreSQL (enquiries) and Mailpit (sales inbox).
+# Enquiries are kept in the `postgres-data` volume across restarts and rebuilds;
+# `docker compose down -v` deletes them.
 
 name: product-catalogue
 
 services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      # Local container only; never real credentials.
+      POSTGRES_USER: catalogue
+      POSTGRES_PASSWORD: catalogue
+      POSTGRES_DB: catalogue
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    ports:
+      # Optional: inspect the data from your machine. 55432 avoids a local Postgres on 5432.
+      - "${POSTGRES_PORT:-55432}:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U catalogue -d catalogue"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    restart: unless-stopped
+
+  # Runs once: applies the migrations in server/prisma/migrations, then exits.
+  # Uses the server's build stage, which has the Prisma CLI; the runtime image does not.
+  migrate:
+    build:
+      context: ./server
+      target: build
+    command: ["npx", "prisma", "migrate", "deploy"]
+    environment:
+      DATABASE_URL: postgresql://catalogue:catalogue@postgres:5432/catalogue
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  # The sales inbox: catches every email the API sends. UI on :8025, SMTP on :1025 (internal).
+  mailpit:
+    image: axllent/mailpit:v1.29
+    ports:
+      - "${MAILPIT_PORT:-8025}:8025"
+    restart: unless-stopped
+
   server:
     build: ./server
     environment:
@@ -16,8 +57,23 @@ services:
       FAKESTORE_BASE_URL: ${FAKESTORE_BASE_URL:-https://fakestoreapi.com}
       UPSTREAM_TIMEOUT_MS: ${UPSTREAM_TIMEOUT_MS:-5000}
       FEATURED_PRODUCT_IDS: ${FEATURED_PRODUCT_IDS:-12,11,3,18,5}
+      # Always PostgreSQL and Mailpit in Docker, whatever .env says for local runs.
+      ENQUIRY_STORE: postgres
+      DATABASE_URL: postgresql://catalogue:catalogue@postgres:5432/catalogue
+      EMAIL_PROVIDER: smtp
+      SMTP_HOST: mailpit
+      SMTP_PORT: "1025"
+      SMTP_SECURE: "false"
+      EMAIL_FROM: ${EMAIL_FROM:-no-reply@catalogue.local}
+      SALES_INBOX_EMAIL: ${SALES_INBOX_EMAIL:-sales@catalogue.local}
+      PUBLIC_APP_URL: ${PUBLIC_APP_URL:-http://localhost:8080}
     ports:
       - "${API_PORT:-3000}:3000"
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+      mailpit:
+        condition: service_started
     restart: unless-stopped
 
   client:
@@ -32,3 +88,6 @@ services:
         # Wait for the server's HEALTHCHECK, so the first page load can reach the API.
         condition: service_healthy
     restart: unless-stopped
+
+volumes:
+  postgres-data:
