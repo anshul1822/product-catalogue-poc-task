@@ -1,0 +1,71 @@
+.product {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  gap: var(--space-8);
+  align-items: start;
+}
+
+.imageBox {
+  padding: var(--space-6);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.image {
+  display: block;
+  width: 100%;
+  max-height: 28rem;
+  object-fit: contain;
+}
+
+.details {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.details h1 {
+  margin: 0;
+}
+
+.category {
+  margin: 0;
+  font-size: var(--font-size-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.category a {
+  color: var(--color-primary);
+}
+
+.price {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+}
+
+.rating {
+  margin: 0;
+  color: var(--color-text-muted);
+}
+
+/* A link (it opens the enquiry page) styled as the page's main action. */
+.enquire {
+  display: inline-block;
+  margin-top: var(--space-2);
+  padding: var(--space-2) var(--space-6);
+  border-radius: var(--radius-sm);
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  font-weight: var(--font-weight-bold);
+  text-decoration: none;
+}
+
+.enquire:hover {
+  background: var(--color-primary-hover);
+}
+
+.description {
+  margin: var(--space-4) 0 0;
+}
