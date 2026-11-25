@@ -4,10 +4,10 @@
 
 1. Read `roadmap/README.md` (slice order, branches, conventions).
 2. Read `roadmap/PROGRESS.md` (what is done, decisions made, what is next).
-3. Read the plan for the slice you are working on: `roadmap/00-data-layer.md`, `roadmap/01-foundation.md`, or its section in `roadmap/02-features.md`. Git steps are in `roadmap/03-pull-request.md`.
+3. Read the plan for the slice you are working on: `roadmap/00-data-layer.md`, `roadmap/01-foundation.md`, or its section in `roadmap/02-features.md`.
 4. `TASKS.md` is the full task breakdown of the challenge brief. Use it for detail; the roadmap is the execution order.
 5. Work on **one slice per session**, on its own branch (`setup/...` for groundwork, `slice/...` for features). Check with `git branch --show-current` before changing files. Do not commit, merge or push unless the user asks.
-6. At the end, update `roadmap/PROGRESS.md` (status, decisions, AI log entries), the matching `TODO(slice ...)` sections of `roadmap/PR_DESCRIPTION.md`, and the status colours and tables in `docs/HLD.md` for what the slice built. Only write what is true of the code; never fill a `TODO(author)` section. At wrap-up, regenerate `docs/HLD.md` with `roadmap/HLD_PROMPT.md`.
+6. At the end, update `roadmap/PROGRESS.md` (status, decisions, AI log entries) and the status colours and tables in `docs/HLD.md` for what the slice built. Only write what is true of the code; never fill a `TODO(author)` section. At wrap-up, regenerate `docs/HLD.md` with `roadmap/HLD_PROMPT.md`.
 
 ## Goal and scope
 

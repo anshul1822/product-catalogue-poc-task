@@ -1,6 +1,6 @@
 # High-level design (HLD)
 
-**Status as of 2026-11-25:** all five acceptance criteria are built and tested. Slices 00, 01, F1, F4, F2 and F3 are merged into `feature/product-catalogue-poc` (PRs #1 to #6); F5 (enquiry) is committed on `slice/feature-enquiry`, merge (PR #7) pending. Generated from the code with `roadmap/HLD_PROMPT.md`.
+**Status as of 2026-11-25:** all five acceptance criteria are built and tested. All seven slices are merged into `feature/product-catalogue-poc` (PRs #1 to #7). Generated from the code with `roadmap/HLD_PROMPT.md`.
 
 **Architecture style:** ports and adapters (hexagonal). The business rules sit in a core that depends only on interfaces (ports). Every outside system (Fake Store, the email provider, the database, and the HTTP layer itself) is an adapter that can be replaced without changing the core. Adapters are chosen in one place, the composition root (`server/src/main.ts`), from configuration.
 
@@ -324,6 +324,6 @@ Errors always use one shape: `{ "error": { "code", "message", "details"? } }`. A
 | F4 | `slice/feature-product` | Product page | Merged (PR #4) |
 | F2 | `slice/feature-category` | Category links and page | Merged (PR #5) |
 | F3 | `slice/feature-search` | Search | Merged (PR #6) |
-| F5 | `slice/feature-enquiry` | Enquiry form, email, PostgreSQL + Prisma, Mailpit, migrate service | Committed and pushed; merge (PR #7) pending |
+| F5 | `slice/feature-enquiry` | Enquiry form, email, PostgreSQL + Prisma, Mailpit, migrate service | Merged (PR #7) |
 
 The reasons behind these design choices, and the trade-offs, are in `DECISIONS.md`.

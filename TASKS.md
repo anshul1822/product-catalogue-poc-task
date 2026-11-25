@@ -131,7 +131,7 @@ Rules:
 - [ ] **0.2** Start an **AI log** now: tools and models, key prompts, and every time the AI was wrong and how you caught it. Write entries as they happen, not afterwards. This feeds `AI_USAGE.md`. (P0)
 - [ ] **0.3** Create the repository on GitHub, GitLab or Bitbucket where the reviewers can reach it: public, or private with access for the reviewers named in the email (brief). (P0)
 - [ ] **0.4** Make an initial commit on `main` with only `.gitignore` (`.env`, `node_modules`, build output) and a README stub, so the PR shows all the work. (P0)
-- [ ] **0.5** Create a feature branch (e.g. `feature/product-catalogue-poc`) and do all the work there (brief), in slice branches merged into it with `--no-ff` (see `roadmap/03-pull-request.md`). (P0)
+- [ ] **0.5** Create a feature branch (e.g. `feature/product-catalogue-poc`) and do all the work there (brief), in slice branches merged into it with `--no-ff` (see `roadmap/README.md`). (P0)
 - [ ] **0.6** Write and commit the agent instruction file: `AGENTS.md`, `CLAUDE.md` or `.cursor/rules` (brief). It should cover: (P0)
   - goal and scope: the five ACs only, no extra features;
   - architecture rules: the client never calls Fake Store, services depend on ports, one adapter per data source or email provider;

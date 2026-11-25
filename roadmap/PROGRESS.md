@@ -6,27 +6,29 @@ Update this file at the end of every session. `DECISIONS.md`, `AI_USAGE.md` and 
 
 | Slice | Branch | Status | Notes |
 |---|---|---|---|
-| Plan and docs (`README.md`, `AGENTS.md`, `TASKS.md`, `roadmap/`, `docs/`) | `slice/feature-enquiry` | Done, **not committed anywhere** | Not in PRs #2 to #6 (D-33, D-38, D-45). The user chose "later" again before F5; they must be committed on this branch before PR #7: `03-pull-request.md`, "F5 and the docs" |
+| Plan and docs (`README.md`, `AGENTS.md`, `TASKS.md`, `DECISIONS.md`, `AI_USAGE.md`, `roadmap/`, `docs/`) | `slice/feature-enquiry` | **Done, merged** | Not in PRs #2 to #6 (D-33, D-38, D-45); committed as `5230959`, the last commit of the F5 branch, and merged by PR #7. Link and status fixes in `docs/wrap-up` (PR #8) |
 | 00 Data layer | `setup/data-layer` | **Done, merged** | Commit `948ee7d`; merged by PR #1 (merge commit `d02988e`); 92 tests |
 | 01 Foundation | `setup/foundation` | **Done, merged** (FND-1 to FND-14) | 8 commits `c11027c` to `c0cdd8c`; merged by PR #2 (merge commit `1c68fba`); server 118 tests, client 23. FND-15 (README) arrives with the docs |
 | F1 Home | `slice/feature-home` | **Done, merged** | Commits `4957f5f` (server, F1-1 and F1-2) and `b7c68d4` (client, F1-3); merged by PR #3 (merge commit `79c6cbf`); server 128 tests, client 35; checked live against the real Fake Store |
 | F4 Product | `slice/feature-product` | **Done, merged** | Commits `e6175e5` (server, F4-1) and `f2dffde` (client, F4-2); merged by PR #4 (merge commit `82965b8`); server 159 tests, client 42; checked live against the real Fake Store |
 | F2 Category | `slice/feature-category` | **Done, merged** | Commits `89b6a65` (domain rules), `c2a22c8` (service and routes), `76667be` (client); merged by PR #5 (merge commit `03e6992`); server 206 tests, client 52; checked live against the real Fake Store |
 | F3 Search | `slice/feature-search` | **Done, merged** | Commits `77b2248` (server, F3-1) and `0c1dcf6` (client, F3-2, F3-3); merged by PR #6 (merge commit `22e2daf`); server 233 tests, client 70; checked live against the real Fake Store |
-| F5 Enquiry (+ PostgreSQL, Prisma) | `slice/feature-enquiry` | **Code committed and pushed** (`0e3ff6e`, `6f4fca8`, `d578472`); docs commit and PR #7 to do | Server 317 tests (+4 gated on a real database), client 93 at `d578472`; checked live end to end. Intermediate commits do not all build (AI log) |
-| Wrap-up and PR | `feature/product-catalogue-poc` | **Next** | All 5 ACs built. `DECISIONS.md`, `AI_USAGE.md`, regenerate `docs/HLD.md`, fresh-clone test, the PR into `main` |
+| F5 Enquiry (+ PostgreSQL, Prisma) | `slice/feature-enquiry` | **Done, merged** | Commits `0e3ff6e`, `6f4fca8`, `d578472` (code) and `5230959` (docs); merged by PR #7 (merge commit `a3d6a6c`); server 317 tests (+4 gated on a real database), client 93; checked live end to end. Intermediate commits do not all build (AI log) |
+| Wrap-up and PR | `docs/wrap-up`, then `feature/product-catalogue-poc` | **In progress** | Done: `DECISIONS.md`, `AI_USAGE.md`, `docs/HLD.md` regenerated from the code. Left: link and status fixes (PR #8), fresh-clone test, time spent, the PR into `main` |
 
-**Git state (2026-11-24):** `https://github.com/anshul1822/product-catalogue-poc-task`.
+**Git state (2026-11-25):** `https://github.com/anshul1822/product-catalogue-poc-task`.
 
 ```text
 main                          a205e8c  .gitignore only
-feature/product-catalogue-poc 22e2daf  merge of slice/feature-search (PR #6)
+feature/product-catalogue-poc a3d6a6c  merge of slice/feature-enquiry (PR #7)
+                              22e2daf  merge of slice/feature-search (PR #6)
                               03e6992  merge of slice/feature-category (PR #5)
                               82965b8  merge of slice/feature-product (PR #4)
                               79c6cbf  merge of slice/feature-home (PR #3)
                               1c68fba  merge of setup/foundation (PR #2)
                               d02988e  merge of setup/data-layer (PR #1)
-slice/feature-enquiry         d578472  client: Enquire button, form, Thank you (F5-10, F5-11), pushed
+slice/feature-enquiry         5230959  docs: README, plan, roadmap, HLD, DECISIONS, AI_USAGE
+                              d578472  client: Enquire button, form, Thank you (F5-10, F5-11)
                               6f4fca8  server: route, config, wiring, Compose with Postgres and Mailpit, nginx fix
                               0e3ff6e  server: Prisma, email, validation, ports and adapters
                                        (both intermediate commits fail to typecheck on their own; see the AI log)
@@ -55,10 +57,10 @@ setup/foundation              c0cdd8c  8 commits on top of d02988e:
 
 Commit-message notes are cosmetic and pushed, so they stay as they are (no force push); every commit from `e345cb4` on typechecks and passes its tests.
 
-Still untracked: `README.md`, `AGENTS.md`, `TASKS.md`, `roadmap/`, `docs/` (the last commit on `slice/feature-enquiry`, before PR #7, D-45), and `fvs` (never commit; delete). Branch prefixes: `setup/` for the two groundwork branches, `slice/feature-<name>` for the feature branches (the pattern used for F1), `docs/` for the docs branch. Every branch is merged into the feature branch with a GitHub PR using "Create a merge commit" (PRs #1 to #6 so far).
+Branch prefixes: `setup/` for the two groundwork branches, `slice/feature-<name>` for the feature branches (the pattern used for F1), `docs/` for the wrap-up branch. Every branch is merged into the feature branch with a GitHub PR using "Create a merge commit" (PRs #1 to #7 so far). The author's local git notes and PR description draft are kept out of the repository (git-ignored).
 
 **Environment notes:**
-- The Docker CLI is not installed on this machine. Install Docker Desktop before slice 01's Docker Compose check.
+- Docker Desktop 29.9.3 (installed during slice 01; about 2 GB memory for Docker).
 - Windows services `postgresql-x64-15` and `postgresql-x64-16` are running locally, so port 5432 may be taken. The F5 plan maps the container to host port 55432.
 - The GitHub CLI (`gh`) is not installed; open the PR in the web UI, or install `gh`.
 
@@ -199,20 +201,42 @@ Tools: a terminal-based AI coding agent, model Claude Opus 5.5 (`claude-opus-5-5
 
 ## Time spent
 
-Record your real time; the AI cannot measure it for you.
+**Total: about 6 hours** of hands-on time over four sessions, over the suggested 2–3 hours.
 
-| Activity | Plan | 00 | 01 | F1 | F4 | F2 | F3 | F5 | Wrap-up |
-|---|---|---|---|---|---|---|---|---|---|
-| Planning | | | | | | | | | |
-| Building | | | | | | | | | |
-| Testing | | | | | | | | | |
-| Reviewing | | | | | | | | | |
+- Planning: 2 h 30 min
+- Building: 1 h 45 min
+- Testing: 1 h
+- Reviewing: 45 min
+
+### Session 1: planning and the data layer (2 h 30 min)
+
+Planning 2 h · Building 20 min · Testing 10 min
+
+Read the brief and wrote the task breakdown; decided the architecture (ports and adapters), where the database fits (enquiries only), the branch structure and Mailpit; built the data layer.
+
+### Session 2: foundation (1 h)
+
+Planning 15 min · Building 30 min · Testing 15 min
+
+Approved the packages; built the API and web app skeleton, the Docker images and Docker Compose.
+
+### Session 3: the five features (1 h 45 min)
+
+Planning 15 min · Building 55 min · Testing 35 min
+
+Built the home, product, category, search and enquiry features, each checked live, committed and merged; designed the enquiry flow and the database.
+
+### Session 4: wrap-up (45 min)
+
+Reviewing 45 min
+
+Wrote `DECISIONS.md` and `AI_USAGE.md`, updated the HLD, did the final review and fix-ups.  
 
 ## Next session (wrap-up)
 
-1. Commit the docs on `slice/feature-enquiry` (F5 code is already pushed), push, merge (PR #7): `roadmap/03-pull-request.md`, "F5 and the docs", step 4. Then check the feature branch has `README.md`, `AGENTS.md`, `TASKS.md`.
-2. `DECISIONS.md` written on 2026-11-25 (assumptions per AC, key decisions and trade-offs, dropped or simplified, growth, next steps). `AI_USAGE.md` written the same day from the AI log; its two `TODO(author)` lines (other tools used, the ownership statement) are the user's.
-3. `docs/HLD.md` was regenerated from the code on 2026-11-25; after PR #7 merges, only its F5 status row and status line need updating. Fill the time table.
-   When writing `DECISIONS.md`, include as decisions (not as "changes from the plan"): no runtime copy of the products (D-10, D-15), database for enquiries only (D-12, D-13), 502 for every outside-system failure (D-17), 404 for an impossible id (D-35), migrations in a one-off service and no Prisma CLI at runtime (D-55, D-56), local defaults memory/console refused in production (D-54), nginx per-request DNS (D-57), no cache yet (D-31, D-44).
-4. Fresh-clone test: clone the feature branch into a new folder, `docker compose up --build`, time it, click through all 5 ACs.
-5. Finish `roadmap/PR_DESCRIPTION.md` and open the PR from `feature/product-catalogue-poc` into `main`; leave it open.
+Done: PR #7 merged the F5 code and the docs; `DECISIONS.md` and `AI_USAGE.md` written; `docs/HLD.md` regenerated from the code.
+
+1. Merge `docs/wrap-up` (PR #8): removes links to the author's local, uncommitted notes and brings the statuses up to date.
+2. Fresh-clone test: clone `feature/product-catalogue-poc` into a new folder, run `docker compose up --build`, time it, and click through all 5 ACs (stop any running stack first: same ports).
+3. Fill in the time table above and the remaining `TODO(author)` line in `AI_USAGE.md`.
+4. Open the PR from `feature/product-catalogue-poc` into `main` with the final description; leave it open. Give the reviewers access if the repo is private, and reply to the challenge email with the links.

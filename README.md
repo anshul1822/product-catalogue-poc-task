@@ -140,7 +140,7 @@ The API checks its configuration at startup and refuses to start with a list of 
 AGENTS.md            rules for the AI coding agents
 TASKS.md             the challenge brief broken down into tasks
 docs/HLD.md          high-level design diagrams
-roadmap/             build plan: slices, git workflow, progress log (decisions, AI log), PR description draft, HLD prompt
+roadmap/             build plan: slices, progress log (decisions, AI log), HLD prompt
 .env.example         configuration with safe local defaults
 docker-compose.yml   web app, API, PostgreSQL, the one-off migration, Mailpit
 server/
